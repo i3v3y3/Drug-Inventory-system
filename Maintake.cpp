@@ -59,7 +59,7 @@ int main()
             sql::Connection* con;
             driver = get_driver_instance();
             // here change your username and password as intended
-            con = driver->connect("tcp://127.0.0.1:3306", "root", "MatoborIvy33");
+            con = driver->connect("tcp://127.0.0.1:3306", "root", "useyours");
 
             con->setSchema("druginventory");
 
