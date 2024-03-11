@@ -25,8 +25,8 @@ int main()
 {
 
     // here I initialize connection with mySQL
-    sql::mysql::MySQL_Driver* driver;
-    sql::Connection* con;
+    mysql::MySQL_Driver* driver;
+    Connection* con;
 
     system("cls");
     //Here I will introduce the page and let the user selt their option
@@ -55,18 +55,18 @@ int main()
         // this part of the code is dedicated to connecting to the mySQL table and displaying the table contents
         try
         {
-            sql::Driver* driver;
-            sql::Connection* con;
+            Driver* driver;
+            Connection* con;
             driver = get_driver_instance();
             // here change your username and password as intended
-            con = driver->connect("tcp://127.0.0.1:3306", "root", "useyours");
+            con = driver->connect("tcp://127.0.0.1:3306", "root", "MatoborIvy33");
 
             con->setSchema("druginventory");
 
-            sql::Statement* stmt;
+            Statement* stmt;
             stmt = con->createStatement();
 
-            sql::ResultSet* res;
+            ResultSet* res;
             res = stmt->executeQuery("SELECT * FROM drugsavailable");
 
             while (res->next()) {
@@ -76,15 +76,15 @@ int main()
                 string drugbrand = res->getString(4);
                 cout << "\t\t "<<NO_<<"\t\t" << quantity << " \t\t" << drugname << " \t\t " << drugbrand << endl;
             }
-            //Here is the selection prompt which can be made easier by just selection but we use input prompt
+            //Here is the selection prompt which can be made easier by just selection cursor but we use input prompt
             cout << "\t\t\n\n Do you want to sell a specific drug?\n\n\t\t Enter the number of the drug:";
 
-            int availabledrug;
             cin >> availabledrug;
 
             // Get the current quantity of the selected drug
             res = stmt->executeQuery("SELECT quantity FROM drugsavailable WHERE NO_ = " + std::to_string(availabledrug));
             int currentQuantity = 0;
+
             if (res->next()) {
                 currentQuantity = res->getInt(1);
             }
@@ -107,7 +107,8 @@ int main()
             cin >> buyingno;
 
             if (buyingno <= 0 || buyingno > availableno) {
-                cout << "Invalid input." << endl;
+                cout << "Not enough drugs" << endl;
+                return availabledrug;
             }
             else if (currentQuantity >= buyingno) {
                 // Subtract the buyingno from the currentQuantity

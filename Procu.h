@@ -13,6 +13,7 @@
 #include <cppconn/prepared_statement.h>
 
 using namespace std;
+using namespace sql;
 
 int newnodrug;
 
@@ -25,18 +26,19 @@ void checkpoint()
     cout << "\t\t\n\nThe system will now load the drugs from the database. Please be patient...";
     system("cls");
 
-    sql::Driver* driver;
-    sql::Connection* con;
+    Driver* driver;
+    Connection* con;
+
     driver = get_driver_instance();
     // here change your username and password as intended
     con = driver->connect("tcp://127.0.0.1:3306", "root", "MatoborIvy33");
 
     con->setSchema("druginventory");
 
-    sql::Statement* stmt;
+    Statement* stmt;
     stmt = con->createStatement();
 
-    sql::ResultSet* res;
+    ResultSet* res;
     res = stmt->executeQuery("SELECT * FROM drugsavailable");
 
     while (res->next()) {
@@ -54,9 +56,10 @@ void checkpoint()
     switch (procchoice)
     {
     case 1:
+    {
         system("cls");
         Sleep(1000);
-       
+
 
         sql::ResultSet* res = stmt->executeQuery("SELECT * FROM drugsavailable WHERE NO_ = " + std::to_string(newnodrug));
         if (!res->next()) {
@@ -85,10 +88,12 @@ void checkpoint()
         Sleep(1000);
 
         break;
+    }
     case 2:
-        // you can write here something else you want to be performed
-
+    { // you can write here something else you want to be performed
+        cout << " hello";
         break;
-
+    }
     }
 }
+
